@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    tools {
+        jdk 'JDK17'
+        maven 'Maven3'
+    }
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -8,15 +13,6 @@ pipeline {
                     url: 'https://github.com/kielynwilson/Midterm-535.git'
             }
         }
-
-       pipeline {
-    agent any
-
-    tools {
-        jdk 'JDK17'
-        maven 'Maven3'
-    }
-
 
         stage('Build - Java 17') {
             tools {
