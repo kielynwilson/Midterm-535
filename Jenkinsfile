@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/kielynwilson/Pipeline.git'
+                    url: 'https://github.com/kielynwilson/Midterm-535.git'
             }
         }
 
