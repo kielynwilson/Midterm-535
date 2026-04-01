@@ -39,18 +39,20 @@ pipeline {
             }
         }
 
-       stage('SonarQube Analysis') {
-    tools {
-        jdk 'JDK17'
-        maven 'Maven3'
-    }
-    steps {
-        withSonarQubeEnv('SonarQube') {
-            withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                bat '''
-                mvn clean verify sonar:sonar ^
-                -Dsonar.login=%SONAR_TOKEN%
-                '''
+        stage('SonarQube Analysis') {
+            tools {
+                jdk 'JDK17'
+                maven 'Maven3'
+            }
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                        bat '''
+                        mvn clean verify sonar:sonar ^
+                        -Dsonar.login=%SONAR_TOKEN%
+                        '''
+                    }
+                }
             }
         }
     }
