@@ -17,22 +17,19 @@ pipeline {
         maven 'Maven3'
     }
 
-    stages {
-        stage('Check Java') {
+
+        stage('Build - Java 17') {
+            tools {
+                jdk 'JDK17'
+                maven 'Maven3'
+            }
             steps {
                 bat 'echo JAVA_HOME=%JAVA_HOME%'
                 bat 'java -version'
-                bat 'javac -version'
+                bat 'mvn -version'
+                bat 'mvn clean compile'
             }
         }
-
-        stage('Build') {
-            steps {
-                bat 'mvn clean package'
-            }
-        }
-    }
-}
 
         stage('Test - Java 11') {
             tools {
