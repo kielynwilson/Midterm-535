@@ -39,15 +39,18 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            tools {
-                jdk 'JDK17'
-                maven 'Maven3'
-            }
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    bat 'mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar'
-                }
+       stage('SonarQube Analysis') {
+    tools {
+        jdk 'JDK17'
+        maven 'Maven3'
+    }
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                bat '''
+                mvn clean verify sonar:sonar ^
+                -Dsonar.login=%SONAR_TOKEN%
+                '''
             }
         }
     }
