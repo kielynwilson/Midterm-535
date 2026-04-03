@@ -53,6 +53,24 @@ pipeline {
                         '''
                     }
                 }
+   stage('Build Docker Image') {
+    steps {
+        bat 'docker build -t kielynwilson/java-app:latest .'
+    }
+}
+
+stage('Push Docker Image') {
+    steps {
+        bat 'docker push kielynwilson/java-app:latest'
+    }
+}
+
+stage('Deploy to Kubernetes') {
+    steps {
+        bat 'kubectl apply -f deployment.yaml'
+        bat 'kubectl apply -f service.yaml'
+        bat 'kubectl get pods'
+        bat 'kubectl get services'
             }
         }
     }
