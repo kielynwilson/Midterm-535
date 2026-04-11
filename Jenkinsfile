@@ -48,29 +48,32 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                         bat '''
-                        mvn clean verify sonar:sonar ^
-                        -Dsonar.login=%SONAR_TOKEN%
-                        '''
+mvn clean verify sonar:sonar ^
+-Dsonar.login=%SONAR_TOKEN%
+'''
                     }
                 }
-   stage('Build Docker Image') {
-    steps {
-        bat 'docker build -t kielynwilson/java-app:latest .'
-    }
-}
+            }
+        }
 
-stage('Push Docker Image') {
-    steps {
-        bat 'docker push kielynwilson/java-app:latest'
-    }
-}
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t kielynwilson/java-app:latest .'
+            }
+        }
 
-stage('Deploy to Kubernetes') {
-    steps {
-        bat 'kubectl apply -f deployment.yaml'
-        bat 'kubectl apply -f service.yaml'
-        bat 'kubectl get pods'
-        bat 'kubectl get services'
+        stage('Push Docker Image') {
+            steps {
+                bat 'docker push kielynwilson/java-app:latest'
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                bat 'kubectl apply -f deployment.yaml'
+                bat 'kubectl apply -f service.yaml'
+                bat 'kubectl get pods'
+                bat 'kubectl get services'
             }
         }
     }
